@@ -5,7 +5,7 @@ import {
   useUpdateTodoMutation,
   useDeleteTodoMutation,
   type Todo,
-} from "../services/TodoApi";
+} from "../services/todoApi";
 
 function formatDue(due?: number | string | null) {
   if (!due && due !== 0) return "";
@@ -15,9 +15,7 @@ function formatDue(due?: number | string | null) {
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
 }
 
-function toTimestamp(local: string) {
-  // input[type=datetime-local] → number(ms)
-  // 빈 값이면 undefined
+function toTimestamp(local: string) { // input[type=datetime-local] → number(ms), 빈 값이면 undefined
   return local ? new Date(local).getTime() : undefined;
 }
 
@@ -25,8 +23,7 @@ function toLocalDatetimeInput(ms?: number | string | null) {
   if (!ms && ms !== 0) return "";
   const n = typeof ms === "string" ? Number(ms) : ms;
   if (!Number.isFinite(n)) return "";
-  const d = new Date(n);
-  // YYYY-MM-DDTHH:mm 형식
+  const d = new Date(n); // YYYY-MM-DDTHH:mm 형식
   const pad = (x: number) => String(x).padStart(2, "0");
   const yyyy = d.getFullYear();
   const mm = pad(d.getMonth() + 1);
@@ -36,7 +33,7 @@ function toLocalDatetimeInput(ms?: number | string | null) {
   return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
 }
 
-export const NotesPage = () => {
+export const TodosPage = () => {
   const { data: todos, isLoading, isFetching, isError, refetch } = useGetTodosQuery();
   const [addTodo, { isLoading: adding }] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
@@ -46,7 +43,6 @@ export const NotesPage = () => {
   const [content, setContent] = useState("");
   const [dueLocal, setDueLocal] = useState(""); // datetime-local 값
 
-  // 간단한 정렬(마감 임박 우선 → 생성 순)
   const sorted = useMemo(() => {
     if (!todos) return [];
     return [...todos].sort((a, b) => {
@@ -74,7 +70,6 @@ export const NotesPage = () => {
         Todos {isFetching && <small>…동기화중</small>}
       </h1>
 
-      {/* 추가 폼 */}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -122,7 +117,6 @@ export const NotesPage = () => {
         </div>
       </form>
 
-      {/* 목록 */}
       <ul style={{ display: "grid", gap: 12, padding: 0, listStyle: "none" }}>
         {sorted.map((t) => (
           <TodoItem

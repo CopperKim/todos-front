@@ -8,15 +8,15 @@ import { MainPage } from './pages/MainPage'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import axios from 'axios'
-import { NotesPage } from './pages/NotesPage'
+import { TodosPage } from './pages/TodosPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { MyPageLayout } from './pages/MyPageLayout'
 
-import { TodoApi } from './services/TodoApi'
-import { ProfileApi } from './services/ProfileApi'
+import { todoApi } from './services/todoApi'
+import { profileApi } from './services/profileApi'
 
-import profileReducer from './redux/slices/ProfileSlice'
-import todoReducer from './redux/slices/TodoSlice'
+import profileReducer from './redux/slices/profileSlice'
+import todoReducer from './redux/slices/todoSlice'
 
 axios.defaults.baseURL = "http://localhost:8000"
 axios.defaults.withCredentials = true 
@@ -26,13 +26,13 @@ export const store = configureStore({
   reducer: {
     profile: profileReducer,
     todo: todoReducer,
-    [ProfileApi.reducerPath]: ProfileApi.reducer,
-    [TodoApi.reducerPath]: TodoApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
+    [todoApi.reducerPath]: todoApi.reducer,
   },
   middleware: (getDefault) =>
     getDefault().concat(
-      ProfileApi.middleware,
-      TodoApi.middleware
+      profileApi.middleware,
+      todoApi.middleware
   ),
 });
 export type RootState = ReturnType<typeof store.getState>;
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
     element: <MyPageLayout />,
     children: [
       { index: true, element: <ProfilePage /> },
-      { path: 'notes', element: <NotesPage /> },
+      { path: 'notes', element: <TodosPage /> },
     ],
   },
   { path: '*', element: <Navigate to="/" replace /> }, 

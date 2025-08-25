@@ -1,12 +1,12 @@
-import type { RootState } from './../../index';
+import type { RootState } from '../../index';
 import { createSlice, type PayloadAction, createSelector } from '@reduxjs/toolkit'
-import type { Role, Profile } from '../../services/ProfileApi' // 경로는 네 프로젝트에 맞게
-import { ProfileApi } from '../../services/ProfileApi'
+import type { Role, Profile } from '../../services/profileApi'
+import { profileApi } from '../../services/profileApi'
 
 type ProfileDraft = Pick<Profile, 'role' | 'bio' | 'tag'>
 
 type ProfileState = {
-  server: (Profile & { username?: string }) | null // username을 서버에서 보여줄 수 있다면 포함
+  server: (Profile & { username?: string }) | null 
   draft: ProfileDraft | null
   isEditing: boolean
 }
@@ -54,14 +54,12 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // 서버 프로필 로드 성공 → server 갱신, 편집 중이 아니면 draft 비움
-    builder.addMatcher(ProfileApi.endpoints.getProfile.matchFulfilled, (state, { payload }) => {
-      state.server = payload as any // 서버가 username도 주면 유지
+    builder.addMatcher(profileApi.endpoints.getProfile.matchFulfilled, (state, { payload }) => {
+      state.server = payload as any 
       if (!state.isEditing) state.draft = null
     })
 
-    // 업데이트 성공 → server 최신 반영 + 편집 종료
-    builder.addMatcher(ProfileApi.endpoints.updateProfile.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(profileApi.endpoints.updateProfile.matchFulfilled, (state, { payload }) => {
       state.server = payload as any
       state.draft = null
       state.isEditing = false
@@ -81,7 +79,7 @@ export const {
 
 export default profileSlice.reducer
 
-// ---------- Selectors ----------
+// Selectors 
 export const selectProfileState = (s: RootState) => s.profile
 
 // 편집 중이면 draft를, 아니면 server를 뷰 모델로 제공

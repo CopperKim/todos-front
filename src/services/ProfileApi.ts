@@ -10,8 +10,8 @@ export type Profile = {
   tag: string[]
 }
 
-export const ProfileApi = createApi({
-  reducerPath: 'ProfileApi', 
+export const profileApi = createApi({
+  reducerPath: 'profileApi', 
   baseQuery: axiosBaseQuery(), 
   endpoints: (builder) => ({
     getProfile: builder.query<Profile, void>({
@@ -28,7 +28,7 @@ export const ProfileApi = createApi({
       }), 
       async onQueryStarted(patch, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          ProfileApi.util.updateQueryData('getProfile', undefined, (draft) => {
+          profileApi.util.updateQueryData('getProfile', undefined, (draft) => {
             Object.assign(draft, patch)
           })
         )
@@ -36,7 +36,7 @@ export const ProfileApi = createApi({
         try {
           const { data: fresh } = await queryFulfilled
           dispatch(
-            ProfileApi.util.updateQueryData('getProfile', undefined, (draft) => {
+            profileApi.util.updateQueryData('getProfile', undefined, (draft) => {
               Object.assign(draft, fresh)
             })
           )
@@ -51,5 +51,5 @@ export const ProfileApi = createApi({
 export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
-} = ProfileApi;
+} = profileApi;
 

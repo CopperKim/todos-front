@@ -13,8 +13,8 @@ export type UpdateTodo = BaseTodo
 
 // chatGPT : optimistic update 
 
-export const TodoApi = createApi({
-  reducerPath: 'TodoApi', 
+export const todoApi = createApi({
+  reducerPath: 'todoApi', 
   baseQuery: axiosBaseQuery(), 
   endpoints: (builder) => ({
     getTodos: builder.query<Todo[], void>({
@@ -32,7 +32,7 @@ export const TodoApi = createApi({
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
         const tempId = `temp-${Date.now()}`
         const patchResult = dispatch(
-          TodoApi.util.updateQueryData('getTodos', undefined, (draft) => {
+          todoApi.util.updateQueryData('getTodos', undefined, (draft) => {
             const tempTodo: Todo = {
               id: tempId,
               userId: 'me', 
@@ -45,7 +45,7 @@ export const TodoApi = createApi({
         try {
           const { data: created } = await queryFulfilled
           dispatch(
-            TodoApi.util.updateQueryData('getTodos', undefined, (draft) => {
+            todoApi.util.updateQueryData('getTodos', undefined, (draft) => {
               const idx = draft.findIndex(t => t.id === tempId)
               if (idx >= 0) draft[idx] = created
             })
@@ -63,7 +63,7 @@ export const TodoApi = createApi({
       }), 
       async onQueryStarted({ id, patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          TodoApi.util.updateQueryData('getTodos', undefined, (draft) => {
+          todoApi.util.updateQueryData('getTodos', undefined, (draft) => {
             const t = draft.find(d => d.id === id)
             if (t) Object.assign(t, patch)
           })
@@ -82,7 +82,7 @@ export const TodoApi = createApi({
       }), 
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          TodoApi.util.updateQueryData('getTodos', undefined, (draft) => {
+          todoApi.util.updateQueryData('getTodos', undefined, (draft) => {
             const idx = draft.findIndex(d => d.id === id)
             if (idx >= 0) draft.splice(idx, 1)
           })
@@ -102,4 +102,4 @@ export const {
   useAddTodoMutation,
   useUpdateTodoMutation,
   useDeleteTodoMutation,
-} = TodoApi;
+} = todoApi;
