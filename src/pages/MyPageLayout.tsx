@@ -29,8 +29,9 @@ export const MyPageLayout = () => {
       <header style={{ marginBottom: 16, display: 'flex', gap: 12 }}>
         <strong>MyPage</strong>
         <nav style={{ display: 'flex', gap: 8 }}>
-          <Link to="/mypage">profile</Link>
-          <Link to="/mypage/notes">notes</Link>
+          <Link to="/mypage">프로필</Link>
+          <Link to="/mypage/notes">노트</Link>
+          <Link to="/mypage/chats">채팅</Link>
 
           {profile.data?.role === "STUDENT" && (
             <Link to="/find-teacher">선생 찾기</Link>
