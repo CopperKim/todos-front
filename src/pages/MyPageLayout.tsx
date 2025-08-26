@@ -1,13 +1,15 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { profileApi } from "../services/profileApi";
+import { profileApi, useGetProfileQuery } from "../services/profileApi";
 import { todoApi } from "../services/todoApi";
 import { useAppDispatch } from "../redux/hooks";
 import axios from "axios";
 
-export function MyPageLayout() {
+export const MyPageLayout = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const profile = useGetProfileQuery();
 
   const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -29,6 +31,14 @@ export function MyPageLayout() {
         <nav style={{ display: 'flex', gap: 8 }}>
           <Link to="/mypage">profile</Link>
           <Link to="/mypage/notes">notes</Link>
+
+          {profile.data?.role === "STUDENT" && (
+            <Link to="/find-teacher">선생 찾기</Link>
+          )}
+          {profile.data?.role === "TEACHER" && (
+            <Link to="/find-student">학생 찾기</Link>
+          )}
+
           <Link to="/" onClick={handleLogout}>logout</Link>
         </nav>
       </header>
