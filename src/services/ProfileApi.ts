@@ -3,7 +3,7 @@ import { axiosBaseQuery } from "../common/axiosBaseQuery"
 
 export type Role = 'UNDEFINED' | 'TEACHER' | 'STUDENT'
 
-export type Profile = {
+export type ProfileWithUsername = {
   username?: string
   role: Role
   bio: string
@@ -14,13 +14,13 @@ export const profileApi = createApi({
   reducerPath: 'profileApi', 
   baseQuery: axiosBaseQuery(), 
   endpoints: (builder) => ({
-    getProfile: builder.query<Profile, void>({
+    getProfile: builder.query<ProfileWithUsername, void>({
       query: () => ({
         url: '/api/profile',
         method: 'GET',
       })
     }), 
-    updateProfile: builder.mutation<Profile, Profile>({
+    updateProfile: builder.mutation<ProfileWithUsername, ProfileWithUsername>({
       query: (patch) => ({
         url: '/api/profile', 
         method: 'PATCH',

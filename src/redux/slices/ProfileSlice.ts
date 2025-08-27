@@ -1,12 +1,12 @@
 import type { RootState } from '../../index';
 import { createSlice, type PayloadAction, createSelector } from '@reduxjs/toolkit'
-import type { Role, Profile } from '../../services/profileApi'
+import type { Role, ProfileWithUsername } from '../../services/profileApi'
 import { profileApi } from '../../services/profileApi'
 
-type ProfileDraft = Pick<Profile, 'role' | 'bio' | 'tags'>
+type ProfileDraft = Pick<ProfileWithUsername, 'role' | 'bio' | 'tags'>
 
 type ProfileState = {
-  server: (Profile & { username?: string }) | null 
+  server: (ProfileWithUsername & { username?: string }) | null 
   draft: ProfileDraft | null
   isEditing: boolean
 }
