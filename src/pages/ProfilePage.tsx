@@ -1,6 +1,6 @@
 import { useGetProfileQuery, useUpdateProfileMutation } from '../services/profileApi'
 import {
-  startEdit, cancelEdit, setRole, setBio, addTag, removeTag,
+  startEdit, cancelEdit, setRole, setBio, addtags, removetags,
   selectProfileView, selectIsEditingProfile
 } from '../redux/slices/profileSlice'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
@@ -23,7 +23,7 @@ export const ProfilePage = () => {
   const onStart = () => dispatch(startEdit())
   const onCancel = () => dispatch(cancelEdit())
   const onSave = async () => {
-    await updateProfile({ role: view.role, bio: view.bio, tag: view.tag }).unwrap()
+    await updateProfile({ role: view.role, bio: view.bio, tags: view.tags }).unwrap()
   }
 
   return (
@@ -34,7 +34,7 @@ export const ProfilePage = () => {
         <>
           <div>role: {view.role}</div>
           <div>bio: {view.bio}</div>
-          <div>tag: {view.tag.join(', ')}</div>
+          <div>tags: {view.tags?.join(', ')}</div>
           <button onClick={onStart}>수정</button>
         </>
       ) : (
@@ -60,11 +60,11 @@ export const ProfilePage = () => {
           </div>
 
           <div>
-            tag:
-            {view.tag.map((t: any) => (
+            tags:
+            {view.tags.map((t: any) => (
               <span key={t}>
                 {t}
-                <button onClick={() => dispatch(removeTag(t))}>x</button>
+                <button onClick={() => dispatch(removetags(t))}>x</button>
               </span>
             ))}
             <input
@@ -72,7 +72,7 @@ export const ProfilePage = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   const v = (e.target as HTMLInputElement).value.trim()
-                  if (v) dispatch(addTag(v))
+                  if (v) dispatch(addtags(v))
                   ;(e.target as HTMLInputElement).value = ''
                 }
               }}

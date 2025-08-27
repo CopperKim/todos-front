@@ -7,7 +7,7 @@ export type Profile = {
   username?: string
   role: Role
   bio: string
-  tag: string[]
+  tags: string[]
 }
 
 export const profileApi = createApi({

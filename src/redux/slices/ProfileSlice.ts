@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction, createSelector } from '@reduxjs/toolki
 import type { Role, Profile } from '../../services/profileApi'
 import { profileApi } from '../../services/profileApi'
 
-type ProfileDraft = Pick<Profile, 'role' | 'bio' | 'tag'>
+type ProfileDraft = Pick<Profile, 'role' | 'bio' | 'tags'>
 
 type ProfileState = {
   server: (Profile & { username?: string }) | null 
@@ -26,7 +26,7 @@ const profileSlice = createSlice({
       state.draft = {
         role: state.server.role,
         bio: state.server.bio,
-        tag: [...state.server.tag],
+        tags: [...state.server.tags],
       }
       state.isEditing = true
     },
@@ -40,17 +40,17 @@ const profileSlice = createSlice({
     setBio(state, action: PayloadAction<string>) {
       if (state.draft) state.draft.bio = action.payload
     },
-    setTags(state, action: PayloadAction<string[]>) {
-      if (state.draft) state.draft.tag = action.payload
+    settagss(state, action: PayloadAction<string[]>) {
+      if (state.draft) state.draft.tags = action.payload
     },
-    addTag(state, action: PayloadAction<string>) {
+    addtags(state, action: PayloadAction<string>) {
       if (!state.draft) return
       const t = action.payload.trim()
-      if (t && !state.draft.tag.includes(t)) state.draft.tag.push(t)
+      if (t && !state.draft.tags.includes(t)) state.draft.tags.push(t)
     },
-    removeTag(state, action: PayloadAction<string>) {
+    removetags(state, action: PayloadAction<string>) {
       if (!state.draft) return
-      state.draft.tag = state.draft.tag.filter((x) => x !== action.payload)
+      state.draft.tags = state.draft.tags.filter((x) => x !== action.payload)
     },
   },
   extraReducers: (builder) => {
@@ -72,9 +72,9 @@ export const {
   cancelEdit,
   setRole,
   setBio,
-  setTags,
-  addTag,
-  removeTag,
+  settagss,
+  addtags,
+  removetags,
 } = profileSlice.actions
 
 export default profileSlice.reducer
