@@ -7,7 +7,7 @@ import {
   type Todo,
 } from "../services/todoApi";
 
-function formatDue(due?: number | string | null) {
+function formatDue(due?: number | string | null) { 
   if (!due && due !== 0) return "";
   const n = typeof due === "string" ? Number(due) : due;
   if (!Number.isFinite(n)) return String(due);
@@ -19,7 +19,7 @@ function toTimestamp(local: string) { // input[type=datetime-local] → number(m
   return local ? new Date(local).getTime() : undefined;
 }
 
-function toLocalDatetimeInput(ms?: number | string | null) {
+function toLocalDatetimeInput(ms?: number | string | null) { // return ISO date format 
   if (!ms && ms !== 0) return "";
   const n = typeof ms === "string" ? Number(ms) : ms;
   if (!Number.isFinite(n)) return "";
