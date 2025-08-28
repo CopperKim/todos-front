@@ -41,10 +41,7 @@ const todoSlice = createSlice({
       const { id, initial } = action.payload
       state.drafts[id] = { ...(initial ?? {}) }
     },
-    setDraftField(
-      state,
-      action: PayloadAction<{ id: string; patch: Partial<BaseTodo> }>
-    ) {
+    setDraftField(state, action: PayloadAction<{ id: string; patch: Partial<BaseTodo> }>) {
       const { id, patch } = action.payload
       state.drafts[id] = { ...(state.drafts[id] ?? {}), ...patch }
     },
