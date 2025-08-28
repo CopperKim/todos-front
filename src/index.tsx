@@ -8,15 +8,17 @@ import { MainPage } from './pages/MainPage'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import axios from 'axios'
-import { TodosPage } from './pages/TodosPage'
+// import { TodosPage } from '../public/TodosPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { MyPageLayout } from './pages/MyPageLayout'
 
-import { todoApi } from './services/todoApi'
+// import { todoApi } from './services/todoApi'
 import { profileApi } from './services/profileApi'
+import { recruitApi } from './services/recruitApi'
 
 import profileReducer from './redux/slices/profileSlice'
-import todoReducer from './redux/slices/todoSlice'
+// import todoReducer from './redux/slices/todoSlice'
+import { StudentRecruitPage } from './pages/StudentRecruitPage'
 
 axios.defaults.baseURL = "http://localhost:8000"
 axios.defaults.withCredentials = true 
@@ -25,14 +27,16 @@ axios.defaults.headers.common["Content-Type"] = "application/json"
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
-    todo: todoReducer,
+    // todo: todoReducer,
+    // recruit: recruitReducer, 
     [profileApi.reducerPath]: profileApi.reducer,
-    [todoApi.reducerPath]: todoApi.reducer,
+    // [todoApi.reducerPath]: todoApi.reducer,
+    [recruitApi.reducerPath]: recruitApi.reducer, 
   },
   middleware: (getDefault) =>
     getDefault().concat(
       profileApi.middleware,
-      todoApi.middleware
+      // todoApi.middleware
   ),
 });
 export type RootState = ReturnType<typeof store.getState>;
@@ -47,9 +51,10 @@ const router = createBrowserRouter([
     element: <MyPageLayout />,
     children: [
       { index: true, element: <ProfilePage /> },
-      { path: 'notes', element: <TodosPage /> },
+      // { path: 'notes', element: <TodosPage /> },
     ],
   },
+  { path: 'find-teacher', element: <StudentRecruitPage />},
   { path: '*', element: <Navigate to="/" replace /> }, 
 ])
 

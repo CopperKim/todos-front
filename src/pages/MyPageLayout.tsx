@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { profileApi, useGetProfileQuery } from "../services/profileApi";
-import { todoApi } from "../services/todoApi";
+// import { todoApi } from "../services/todoApi";
 import { useAppDispatch } from "../redux/hooks";
 import axios from "axios";
 
@@ -19,7 +19,7 @@ export const MyPageLayout = () => {
       console.warn("logout call failed:", e);
     } finally {
       dispatch(profileApi.util.resetApiState());
-      dispatch(todoApi.util.resetApiState());
+      // dispatch(todoApi.util.resetApiState());
       navigate("/");
     }
   };
