@@ -36,6 +36,7 @@ export const store = configureStore({
   middleware: (getDefault) =>
     getDefault().concat(
       profileApi.middleware,
+      recruitApi.middleware, 
       // todoApi.middleware
   ),
 });
