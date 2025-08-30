@@ -8,6 +8,7 @@ export const MainPage = () => {
       <div style={{ display: 'flex', gap: 8 }}>
         <Link to="/login"><button>로그인</button></Link>
         <Link to="/register"><button>회원가입</button></Link>
+        <Link to="/mypage"><button>mypage</button></Link>
       </div>
     </div>
   )
