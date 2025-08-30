@@ -30,7 +30,7 @@ export const MyPageLayout = () => {
         <strong>MyPage</strong>
         <nav style={{ display: 'flex', gap: 8 }}>
           <Link to="/mypage">프로필</Link>
-          <Link to="/mypage/notes">노트</Link>
+          {/* <Link to="/mypage/notes">노트</Link> */}
           <Link to="/mypage/chats">채팅</Link>
 
           {profile.data?.role === "STUDENT" && (
