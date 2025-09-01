@@ -64,6 +64,7 @@ const router = createBrowserRouter([
       }, 
     ],
   },
+  { path: 'find-teacher', element: <StudentRecruitPage />},
   { path: '*', element: <Navigate to="/" replace /> }, 
 ])
 

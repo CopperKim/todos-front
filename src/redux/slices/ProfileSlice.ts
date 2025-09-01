@@ -12,7 +12,7 @@ type ProfileState = {
 }
 
 const initialState: ProfileState = {
-  server: null,
+  server: {username:"username", role:"UNDEFINED", bio:"bio", tags:["tags"]},
   draft: null,  
   isEditing: false,
 }
@@ -26,7 +26,7 @@ const profileSlice = createSlice({
       state.draft = {
         role: state.server.role,
         bio: state.server.bio,
-        tags: [...state.server.tags],
+        tags: state.server.tags,
       }
       state.isEditing = true
     },
