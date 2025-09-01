@@ -17,8 +17,10 @@ import { profileApi } from './services/profileApi'
 import { recruitApi } from './services/recruitApi'
 
 import profileReducer from './redux/slices/profileSlice'
+import teacherRecruitReducer from './redux/slices/teacherRecruitSlice'
 // import todoReducer from './redux/slices/todoSlice'
 import { StudentRecruitPage } from './pages/StudentRecruitPage'
+import { TeacherRecruitPage } from './pages/TeacherRecruitPage'
 
 axios.defaults.baseURL = "http://localhost:8000"
 axios.defaults.withCredentials = true 
@@ -27,6 +29,7 @@ axios.defaults.headers.common["Content-Type"] = "application/json"
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
+    teacherRecruit: teacherRecruitReducer, 
     // todo: todoReducer,
     // recruit: recruitReducer, 
     [profileApi.reducerPath]: profileApi.reducer,
@@ -52,10 +55,15 @@ const router = createBrowserRouter([
     element: <MyPageLayout />,
     children: [
       { index: true, element: <ProfilePage /> },
-      // { path: 'notes', element: <TodosPage /> },
+      // { path: 'notes', element: <TodosPage /> },    
+      { path: 'find-teacher', element: <StudentRecruitPage />},
+      { path: 'find-student', element: <TeacherRecruitPage />, 
+        // children: {
+        //    { path: ':recruitId', element: }
+        // }
+      }, 
     ],
   },
-  { path: 'find-teacher', element: <StudentRecruitPage />},
   { path: '*', element: <Navigate to="/" replace /> }, 
 ])
 
