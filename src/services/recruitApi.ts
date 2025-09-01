@@ -7,6 +7,7 @@ export type getRecruitOpts = {
     myRecruit?: boolean
     tags?: string[]
     mode?: TagMode
+    // sort?: 'latest' | 'priceAsc' | 'priceDesc';
     count?: number 
 }
 
