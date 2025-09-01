@@ -6,11 +6,15 @@ export const RecruitItem = ({
   recruit,
   onEdit,
   onDelete,
+  onClick
 }: {
   recruit: Recruit;
-  onEdit: (patch: Partial<Recruit>) => Promise<any>;
-  onDelete: () => Promise<any>;
+  onEdit?: (patch: Partial<Recruit>) => Promise<any>;
+  onDelete?: () => Promise<any>;
+  onClick?: () => Promise<any>;
 }) => {
+  const canEdit = !!onEdit && !!onDelete 
+
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(recruit.title);
   const [content, setContent] = useState(recruit.content);
@@ -40,6 +44,7 @@ export const RecruitItem = ({
   };
 
   const handleSave = async () => {
+    if (!canEdit) return; 
     const next: Recruit = {
       // ...recruit,
       title: title.trim(),
@@ -51,10 +56,81 @@ export const RecruitItem = ({
     setEditing(false);
   };
 
-  return (
+  if (!canEdit) return (
     <li style={{ border: "1px solid #ddd", borderRadius: 8, padding: 12 }}>
-      {!editing ? (
-        <>
+      <>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+            <strong style={{ fontSize: 16 }}>{recruit.title}</strong>
+            <span style={{ marginLeft: "auto", fontSize: 12, opacity: 0.7 }}>
+            </span>
+          </div>
+
+          {recruit.content && (
+            <p style={{ margin: "8px 0 12px", whiteSpace: "pre-wrap" }}>
+              {recruit.content}
+            </p>
+          )}
+
+          <div style={{ margin: "8px 0" }}>
+            <DayPicker
+              value={dayAvilable}
+              onChange={setDayAvailable}
+              disabled={true}
+              showShortcuts={false}
+              labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+            />
+          </div>
+
+          <div
+            style={{
+              width: "400px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 8,
+            }}
+          >
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {recruit.tags?.length ? (
+                recruit.tags.map((t) => (
+                  <span
+                    key={t}
+                    style={{
+                      fontSize: 12,
+                      padding: "2px 8px",
+                      borderRadius: 999,
+                      border: "1px solid #ccc",
+                      background: "#f7f7f7",
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))
+              ) : (
+                <span style={{ opacity: 0.6, fontSize: 12 }}>태그 없음</span>
+              )}
+            </div>
+            <button
+              style={{
+                padding: "4px 10px",
+                fontSize: 12,
+                borderRadius: 6,
+                border: "1px solid #888",
+                background: "#eee",
+                cursor: "pointer",
+              }}
+              onClick={onClick}
+            >
+              채팅
+            </button>
+          </div>
+        </>
+    </li>
+  ) 
+
+  else if (editing) return (
+    <li style={{ border: "1px solid #ddd", borderRadius: 8, padding: 12 }}>
+      <>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
             <strong style={{ fontSize: 16 }}>{recruit.title}</strong>
             <span style={{ marginLeft: "auto", fontSize: 12, opacity: 0.7 }}>
@@ -112,91 +188,94 @@ export const RecruitItem = ({
             </button>
           </div>
         </>
-      ) : (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSave();
-          }}
-          style={{ display: "grid", gap: 8 }}
-        >
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            placeholder="제목 *"
-          />
-          <textarea
-            rows={3}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="내용"
-          />
+    </li>
+  )
 
-          <div>
-            <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>
-              가능한 요일
-            </div>
-            <DayPicker
-              value={dayAvilable}
-              onChange={(next: boolean[]) => setDayAvailable([...next])}
-              disabled={false}
-              showShortcuts={false}
-              labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-            />
+  else return (
+    <li style={{ border: "1px solid #ddd", borderRadius: 8, padding: 12 }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+        style={{ display: "grid", gap: 8 }}
+      >
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          placeholder="제목 *"
+        />
+        <textarea
+          rows={3}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="내용"
+        />
+
+        <div>
+          <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>
+            가능한 요일
           </div>
+          <DayPicker
+            value={dayAvilable}
+            onChange={(next: boolean[]) => setDayAvailable([...next])}
+            disabled={false}
+            showShortcuts={false}
+            labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+          />
+        </div>
 
-          <div>
-            <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>
-              태그
-            </div>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-              {tags.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 12,
-                    padding: "2px 8px",
-                    borderRadius: 999,
-                    border: "1px solid #ccc",
-                    background: "#f7f7f7",
-                  }}
-                >
-                  {t}
-                  <button type="button" onClick={() => removeTag(t)} style={{ fontSize: 12 }}>
-                    ×
-                  </button>
-                </span>
-              ))}
-              <input
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                placeholder="태그 추가"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addTag();
-                  }
+        <div>
+          <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>
+            태그
+          </div>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+            {tags.map((t) => (
+              <span
+                key={t}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontSize: 12,
+                  padding: "2px 8px",
+                  borderRadius: 999,
+                  border: "1px solid #ccc",
+                  background: "#f7f7f7",
                 }}
-                style={{ minWidth: 120 }}
-              />
-              <button type="button" onClick={addTag}>
-                추가
-              </button>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", gap: 8 }}>
-            <button type="submit">저장</button>
-            <button type="button" onClick={() => setEditing(false)}>
-              취소
+              >
+                {t}
+                <button type="button" onClick={() => removeTag(t)} style={{ fontSize: 12 }}>
+                  ×
+                </button>
+              </span>
+            ))}
+            <input
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+              placeholder="태그 추가"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag();
+                }
+              }}
+              style={{ minWidth: 120 }}
+            />
+            <button type="button" onClick={addTag}>
+              추가
             </button>
           </div>
-        </form>
-      )}
+        </div>
+
+        <div style={{ display: "flex", gap: 8 }}>
+          <button type="submit">저장</button>
+          <button type="button" onClick={() => setEditing(false)}>
+            취소
+          </button>
+        </div>
+      </form>
     </li>
-  );
-};
+  )
+}
