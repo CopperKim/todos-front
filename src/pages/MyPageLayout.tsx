@@ -34,10 +34,10 @@ export const MyPageLayout = () => {
           <Link to="/mypage/chats">채팅</Link>
 
           {profile.data?.role === "STUDENT" && (
-            <Link to="/find-teacher">선생 찾기</Link>
+            <Link to="/mypage/find-teacher">선생 찾기</Link>
           )}
           {profile.data?.role === "TEACHER" && (
-            <Link to="/find-student">학생 찾기</Link>
+            <Link to="/mypage/find-student">학생 찾기</Link>
           )}
 
           <Link to="/" onClick={handleLogout}>logout</Link>
