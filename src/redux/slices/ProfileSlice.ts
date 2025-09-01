@@ -6,7 +6,7 @@ import { profileApi } from '../../services/profileApi'
 type ProfileDraft = Pick<ProfileWithUsername, 'role' | 'bio' | 'tags'>
 
 type ProfileState = {
-  server: (ProfileWithUsername & { username?: string }) | null 
+  server: (ProfileWithUsername) | null 
   draft: ProfileDraft | null
   isEditing: boolean
 }
@@ -40,7 +40,7 @@ const profileSlice = createSlice({
     setBio(state, action: PayloadAction<string>) {
       if (state.draft) state.draft.bio = action.payload
     },
-    settagss(state, action: PayloadAction<string[]>) {
+    settags(state, action: PayloadAction<string[]>) {
       if (state.draft) state.draft.tags = action.payload
     },
     addtags(state, action: PayloadAction<string>) {
@@ -55,8 +55,8 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(profileApi.endpoints.getProfile.matchFulfilled, (state, { payload }) => {
-      state.server = payload as any 
-      if (!state.isEditing) state.draft = null
+      state.server = payload as any ; 
+      if (!state.isEditing) state.draft = null ; 
     })
 
     builder.addMatcher(profileApi.endpoints.updateProfile.matchFulfilled, (state, { payload }) => {
@@ -72,7 +72,7 @@ export const {
   cancelEdit,
   setRole,
   setBio,
-  settagss,
+  settags,
   addtags,
   removetags,
 } = profileSlice.actions

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAddRecruitMutation, useDeleteRecruitMutation, useGetRecruitByOptQuery, useUpdateRecruitMutation } from "../services/recruitApi";
 import { DayPicker } from "../components/dayPicker";
-import { RecruitItem } from "../components/RecruitItem";
+import { RecruitItem } from "../components/recruitItem";
 
 export const StudentRecruitPage = () => {
     const { data: recruit, isLoading, isFetching, isError, refetch } = useGetRecruitByOptQuery({ myRecruit: true });
